@@ -15,10 +15,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Add MVC with views (replaces System.Web.Mvc registration)
 builder.Services.AddControllersWithViews();
 
-// Configure EF Core with SQL Server (replaces web.config connectionStrings + EF6 DbContext)
+// Configure EF Core with PostgreSQL (replaces SQL Server UseSqlServer)
+// UseNpgsql replaces UseSqlServer; EnableLegacyTimestampBehavior handles DateTime UTC behaviour;
+// UseSnakeCaseNamingConvention maps PascalCase C# names to snake_case PostgreSQL identifiers.
 builder.Services.AddDbContext<MusicStoreDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MusicStoreEntities")
-        ?? "Server=(localdb)\\mssqllocaldb;Database=MvcMusicStore;Trusted_Connection=True;MultipleActiveResultSets=true"));
+    options
+        .UseNpgsql(
+            builder.Configuration.GetConnectionString("MusicStoreEntities")
+                ?? "Host=localhost;Port=5432;Database=MvcMusicStore;Username=postgres;Password=postgres",
+            npgsqlOptions =>
+            {
+                npgsqlOptions.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(30),
+                    errorCodesToAdd: null);
+                npgsqlOptions.MigrationsHistoryTable("__ef_migrations_history", "public");
+            })
+        .UseSnakeCaseNamingConvention());
 
 // Configure ASP.NET Core Identity (replaces Forms Authentication + Membership provider)
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>

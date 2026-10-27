@@ -7,6 +7,7 @@ namespace MvcMusicStore.Infrastructure.Data
     /// <summary>
     /// EF Core DbContext for MvcMusicStore - replaces legacy EF6 MusicStoreEntities.
     /// Inherits from IdentityDbContext to support ASP.NET Core Identity.
+    /// Configured for PostgreSQL with snake_case naming conventions and public schema.
     /// </summary>
     public class MusicStoreDbContext : IdentityDbContext
     {
@@ -26,13 +27,17 @@ namespace MvcMusicStore.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Set default schema to "public" for PostgreSQL
+            modelBuilder.HasDefaultSchema("public");
+
             // Album configuration
             modelBuilder.Entity<Album>(entity =>
             {
                 entity.HasKey(a => a.AlbumId);
                 entity.Property(a => a.Title).IsRequired().HasMaxLength(160);
                 entity.Property(a => a.AlbumArtUrl).HasMaxLength(1024);
-                entity.Property(a => a.Price).HasColumnType("decimal(18,2)");
+                // Use numeric(18,2) for PostgreSQL instead of decimal(18,2)
+                entity.Property(a => a.Price).HasColumnType("numeric(18,2)");
                 entity.HasOne(a => a.Genre)
                       .WithMany(g => g.Albums)
                       .HasForeignKey(a => a.GenreId);
@@ -61,6 +66,8 @@ namespace MvcMusicStore.Infrastructure.Data
             {
                 entity.HasKey(c => c.RecordId);
                 entity.Property(c => c.CartId).IsRequired().HasMaxLength(50);
+                // Map DateTime to timestamptz for PostgreSQL
+                entity.Property(c => c.DateCreated).HasColumnType("timestamptz");
                 entity.HasOne(c => c.Album)
                       .WithMany()
                       .HasForeignKey(c => c.AlbumId);
@@ -70,7 +77,8 @@ namespace MvcMusicStore.Infrastructure.Data
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasKey(o => o.OrderId);
-                entity.Property(o => o.Total).HasColumnType("decimal(18,2)");
+                // Use numeric(18,2) for PostgreSQL instead of decimal(18,2)
+                entity.Property(o => o.Total).HasColumnType("numeric(18,2)");
                 entity.Property(o => o.Username).HasMaxLength(256);
                 entity.Property(o => o.FirstName).IsRequired().HasMaxLength(160);
                 entity.Property(o => o.LastName).IsRequired().HasMaxLength(160);
@@ -81,13 +89,16 @@ namespace MvcMusicStore.Infrastructure.Data
                 entity.Property(o => o.Country).IsRequired().HasMaxLength(40);
                 entity.Property(o => o.Phone).IsRequired().HasMaxLength(24);
                 entity.Property(o => o.Email).IsRequired().HasMaxLength(256);
+                // Map DateTime to timestamptz for PostgreSQL
+                entity.Property(o => o.OrderDate).HasColumnType("timestamptz");
             });
 
             // OrderDetail configuration
             modelBuilder.Entity<OrderDetail>(entity =>
             {
                 entity.HasKey(od => od.OrderDetailId);
-                entity.Property(od => od.UnitPrice).HasColumnType("decimal(18,2)");
+                // Use numeric(18,2) for PostgreSQL instead of decimal(18,2)
+                entity.Property(od => od.UnitPrice).HasColumnType("numeric(18,2)");
                 entity.HasOne(od => od.Order)
                       .WithMany(o => o.OrderDetails)
                       .HasForeignKey(od => od.OrderId);
