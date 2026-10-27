@@ -1,0 +1,15 @@
+@model IEnumerable<MvcMusicStore.Application.DTOs.GenreDto>
+
+@{
+    ViewBag.Title = "Browse Genres";
+}
+
+<div class="genre">
+    <h3>Select a genre</h3>
+    <ul id="genre-list">
+        @foreach (var genre in Model)
+        {
+            <li><a href="@Url.Action("Browse", new { genre = genre.Name })">@genre.Name</a></li>
+        }
+    </ul>
+</div>

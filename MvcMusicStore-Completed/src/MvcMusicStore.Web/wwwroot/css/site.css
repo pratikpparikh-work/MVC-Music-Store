@@ -1,0 +1,115 @@
+/* Site.css - Migrated from legacy /Content/Site.css to /wwwroot/css/site.css */
+body {
+    background-color: #fff;
+    border-top: solid 10px #000;
+    color: #333;
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+}
+
+a:link, a:visited {
+    color: #333;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #000;
+    text-decoration: none;
+}
+
+#header {
+    background-color: #1b1b1b;
+    display: block;
+    height: 60px;
+    padding: 0 20px;
+}
+
+#header h1 {
+    color: #e8e8e8;
+    font-size: 1.4em;
+    font-weight: 600;
+    margin: 0;
+    padding: 15px 0;
+    float: left;
+}
+
+#header h1 a {
+    color: #e8e8e8;
+    text-decoration: none;
+}
+
+#navlist {
+    float: right;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#navlist li {
+    display: inline;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#navlist li a {
+    color: #cdcdcd;
+    display: inline-block;
+    font-size: .9em;
+    font-weight: 600;
+    height: 60px;
+    line-height: 60px;
+    padding: 0 15px;
+    text-decoration: none;
+}
+
+#navlist li a:hover, #navlist li a#current {
+    background-color: #000;
+    color: #fff;
+}
+
+#categories {
+    background-color: #f2f2f2;
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 160px;
+}
+
+#categories li a {
+    border-bottom: 1px solid #ccc;
+    display: block;
+    font-size: .9em;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+
+#categories li a:hover {
+    background-color: #e8e8e8;
+}
+
+#main {
+    float: left;
+    padding: 20px;
+    width: 700px;
+}
+
+#footer {
+    clear: both;
+    background-color: #1b1b1b;
+    color: #e8e8e8;
+    padding: 10px 20px;
+    text-align: right;
+}
+
+#footer a {
+    color: #e8e8e8;
+}
+
+.text-danger {
+    color: #a94442;
+}

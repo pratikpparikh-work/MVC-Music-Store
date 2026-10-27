@@ -1,0 +1,12 @@
+@model IEnumerable<MvcMusicStore.Application.DTOs.GenreDto>
+@* 
+    GenreMenu ViewComponent view.
+    Replaces legacy Views/Store/GenreMenu.cshtml used with [ChildActionOnly].
+    Invoked via: @await Component.InvokeAsync("GenreMenu")
+*@
+<ul id="categories">
+    @foreach (var genre in Model)
+    {
+        <li><a href="@Url.Action("Browse", "Store", new { genre = genre.Name })">@genre.Name</a></li>
+    }
+</ul>

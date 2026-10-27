@@ -1,0 +1,46 @@
+@model MvcMusicStore.Web.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Create a New Account</h2>
+
+<form asp-action="Register" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="editor-label">
+        <label asp-for="UserName"></label>
+    </div>
+    <div class="editor-field">
+        <input asp-for="UserName" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="editor-label">
+        <label asp-for="Email"></label>
+    </div>
+    <div class="editor-field">
+        <input asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="editor-label">
+        <label asp-for="Password"></label>
+    </div>
+    <div class="editor-field">
+        <input asp-for="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="editor-label">
+        <label asp-for="ConfirmPassword"></label>
+    </div>
+    <div class="editor-field">
+        <input asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <input type="submit" value="Register" />
+</form>

@@ -1,0 +1,27 @@
+@model MvcMusicStore.Application.DTOs.AlbumDto
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete Confirmation</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Album</legend>
+    <div class="display-label">Genre</div>
+    <div class="display-field">@Model.GenreName</div>
+    <div class="display-label">Artist</div>
+    <div class="display-field">@Model.ArtistName</div>
+    <div class="display-label">Title</div>
+    <div class="display-field">@Model.Title</div>
+    <div class="display-label">Price</div>
+    <div class="display-field">@Model.Price.ToString("C")</div>
+</fieldset>
+
+<form asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="AlbumId" />
+    <input type="submit" value="Delete" /> |
+    <a href="@Url.Action("Index")">Back to List</a>
+</form>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - ASP.NET MVC Music Store</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div id="header">
+        <h1><a href="/">ASP.NET MVC MUSIC STORE</a></h1>
+        <ul id="navlist">
+            <li class="first"><a href="@Url.Content("~")" id="current">Home</a></li>
+            <li><a href="@Url.Action("Index", "Store")">Store</a></li>
+            <li id="cart-status">@await Component.InvokeAsync("CartSummary")</li>
+            <li><a href="@Url.Action("Index", "StoreManager")">Admin</a></li>
+        </ul>
+    </div>
+
+    @await Component.InvokeAsync("GenreMenu")
+
+    <div id="main">
+        @RenderBody()
+    </div>
+
+    <div id="footer">
+        built with <a href="https://dotnet.microsoft.com/apps/aspnet/mvc">ASP.NET Core MVC 8</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,21 @@
+@model IEnumerable<MvcMusicStore.Application.DTOs.AlbumDto>
+
+@{
+    ViewBag.Title = "ASP.NET MVC Music Store";
+}
+
+<div id="promotion">
+</div>
+
+<div class="genre-list">
+    <h3><em>Fresh</em> off the grill</h3>
+    @foreach (var album in Model)
+    {
+        <div class="album-item">
+            <a href="@Url.Action("Details", "Store", new { id = album.AlbumId })">
+                <img alt="@album.Title" src="@album.AlbumArtUrl" />
+                <span>@album.Title</span>
+            </a>
+        </div>
+    }
+</div>

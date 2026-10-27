@@ -1,0 +1,26 @@
+@model MvcMusicStore.Application.DTOs.AlbumDto
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Album</legend>
+    <div class="display-label">Genre</div>
+    <div class="display-field">@Model.GenreName</div>
+    <div class="display-label">Artist</div>
+    <div class="display-field">@Model.ArtistName</div>
+    <div class="display-label">Title</div>
+    <div class="display-field">@Model.Title</div>
+    <div class="display-label">Price</div>
+    <div class="display-field">@Model.Price.ToString("C")</div>
+    <div class="display-label">Album Art URL</div>
+    <div class="display-field">@Model.AlbumArtUrl</div>
+</fieldset>
+
+<p>
+    <a href="@Url.Action("Edit", new { id = Model.AlbumId })">Edit</a> |
+    <a href="@Url.Action("Index")">Back to List</a>
+</p>

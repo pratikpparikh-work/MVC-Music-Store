@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>MvcMusicStore.Application</RootNamespace>
+    <AssemblyName>MvcMusicStore.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MvcMusicStore.Domain\MvcMusicStore.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

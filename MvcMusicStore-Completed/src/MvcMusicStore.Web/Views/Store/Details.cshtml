@@ -1,0 +1,28 @@
+@model MvcMusicStore.Application.DTOs.AlbumDto
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<div id="album-details">
+    <p>
+        <a href="@Url.Action("Browse", "Store", new { genre = Model.GenreName })">@Model.GenreName</a>
+    </p>
+    <div id="album-art">
+        <img src="@Model.AlbumArtUrl" alt="@Model.Title" />
+    </div>
+    <h2>@Model.Title</h2>
+    <p>
+        <em>Artist:</em>
+        @Model.ArtistName
+    </p>
+    <p>
+        <em>Price:</em>
+        @Model.Price.ToString("C")
+    </p>
+    <p class="button">
+        <a href="@Url.Action("AddToCart", "ShoppingCart", new { id = Model.AlbumId })">
+            Add to cart
+        </a>
+    </p>
+</div>

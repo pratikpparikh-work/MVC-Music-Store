@@ -1,0 +1,58 @@
+@model MvcMusicStore.Application.DTOs.AlbumDto
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="editor-label">
+        <label asp-for="GenreId">Genre</label>
+    </div>
+    <div class="editor-field">
+        <select asp-for="GenreId" asp-items="ViewBag.GenreId"></select>
+        <span asp-validation-for="GenreId" class="text-danger"></span>
+    </div>
+
+    <div class="editor-label">
+        <label asp-for="ArtistId">Artist</label>
+    </div>
+    <div class="editor-field">
+        <select asp-for="ArtistId" asp-items="ViewBag.ArtistId"></select>
+        <span asp-validation-for="ArtistId" class="text-danger"></span>
+    </div>
+
+    <div class="editor-label">
+        <label asp-for="Title"></label>
+    </div>
+    <div class="editor-field">
+        <input asp-for="Title" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="editor-label">
+        <label asp-for="Price"></label>
+    </div>
+    <div class="editor-field">
+        <input asp-for="Price" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="editor-label">
+        <label asp-for="AlbumArtUrl">Album Art URL</label>
+    </div>
+    <div class="editor-field">
+        <input asp-for="AlbumArtUrl" />
+        <span asp-validation-for="AlbumArtUrl" class="text-danger"></span>
+    </div>
+
+    <input type="submit" value="Create" />
+</form>
+
+<div>
+    <a href="@Url.Action("Index")">Back to List</a>
+</div>

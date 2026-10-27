@@ -1,0 +1,8 @@
+@*
+    CartSummary ViewComponent view.
+    Replaces legacy Views/ShoppingCart/CartSummary.cshtml used with [ChildActionOnly].
+    Invoked via: @await Component.InvokeAsync("CartSummary")
+*@
+<a href="@Url.Action("Index", "ShoppingCart")">
+    Cart (@ViewData["CartCount"])
+</a>
