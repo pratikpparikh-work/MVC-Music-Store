@@ -12,7 +12,6 @@ namespace MvcMusicStore.Tests.Controllers
 {
     /// <summary>
     /// Unit tests for HomeController.
-    /// Tests controller actions in isolation using Moq.
     /// </summary>
     public class HomeControllerTests
     {
@@ -61,6 +60,46 @@ namespace MvcMusicStore.Tests.Controllers
 
             // Assert
             _mockAlbumService.Verify(s => s.GetTopSellingAlbumsAsync(5), Times.Once);
+        }
+
+        [Fact]
+        public async Task Index_WhenNoAlbums_ReturnsViewWithEmptyList()
+        {
+            // Arrange
+            _mockAlbumService.Setup(s => s.GetTopSellingAlbumsAsync(5))
+                .ReturnsAsync(new List<Album>());
+
+            // Act
+            var result = await _controller.Index();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<IEnumerable<Album>>(viewResult.Model);
+            Assert.Empty(model);
+        }
+
+        [Fact]
+        public void Error_ReturnsView()
+        {
+            // Act
+            var result = _controller.Error();
+
+            // Assert
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public async Task Index_ReturnsViewResult()
+        {
+            // Arrange
+            _mockAlbumService.Setup(s => s.GetTopSellingAlbumsAsync(5))
+                .ReturnsAsync(new List<Album>());
+
+            // Act
+            var result = await _controller.Index();
+
+            // Assert
+            Assert.IsType<ViewResult>(result);
         }
     }
 }
