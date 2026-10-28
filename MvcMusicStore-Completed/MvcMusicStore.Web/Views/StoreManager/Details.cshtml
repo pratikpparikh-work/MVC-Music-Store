@@ -1,0 +1,31 @@
+@model MvcMusicStore.Domain.Entities.Album
+
+@{
+    ViewBag.Title = "Album Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Album</legend>
+
+    <div class="display-label">Genre</div>
+    <div class="display-field">@Model.Genre?.Name</div>
+
+    <div class="display-label">Artist</div>
+    <div class="display-field">@Model.Artist?.Name</div>
+
+    <div class="display-label">Title</div>
+    <div class="display-field">@Model.Title</div>
+
+    <div class="display-label">Price</div>
+    <div class="display-field">@Model.Price.ToString("C")</div>
+
+    <div class="display-label">Album Art URL</div>
+    <div class="display-field">@Model.AlbumArtUrl</div>
+</fieldset>
+
+<p>
+    <a asp-controller="StoreManager" asp-action="Edit" asp-route-id="@Model.AlbumId">Edit</a> |
+    <a asp-controller="StoreManager" asp-action="Index">Back to List</a>
+</p>

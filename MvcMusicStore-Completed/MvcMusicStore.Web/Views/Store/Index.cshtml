@@ -1,0 +1,19 @@
+@model IEnumerable<MvcMusicStore.Domain.Entities.Genre>
+
+@{
+    ViewBag.Title = "Browse Genres";
+}
+
+<div class="genre">
+    <h3>Select a genre</h3>
+    <ul id="genre-list">
+        @foreach (var genre in Model)
+        {
+            <li>
+                <a asp-controller="Store" asp-action="Browse" asp-route-genre="@genre.Name">
+                    @genre.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div>

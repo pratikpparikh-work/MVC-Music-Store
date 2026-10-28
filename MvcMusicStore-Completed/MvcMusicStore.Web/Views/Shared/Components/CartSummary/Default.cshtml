@@ -1,0 +1,5 @@
+@model int
+@* CartSummary ViewComponent - replaces [ChildActionOnly] CartSummary action *@
+<a asp-controller="ShoppingCart" asp-action="Index" id="cart-status">
+    Cart (@Model)
+</a>

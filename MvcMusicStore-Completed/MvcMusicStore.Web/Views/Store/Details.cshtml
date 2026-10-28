@@ -1,0 +1,24 @@
+@model MvcMusicStore.Domain.Entities.Album
+
+@{
+    ViewBag.Title = "Album - " + Model.Title;
+}
+
+<div id="album-details">
+    <p>
+        <a asp-controller="Store" asp-action="Index">Back to list</a>
+    </p>
+    <img alt="@Model.Title" src="@Model.AlbumArtUrl" />
+    <div id="album-actions">
+        <hgroup>
+            <h2>@Model.Title</h2>
+            <h3>@Model.Artist?.Name</h3>
+            <h4>@Model.Price.ToString("C")</h4>
+        </hgroup>
+        <p class="button">
+            <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@Model.AlbumId">
+                Add to cart
+            </a>
+        </p>
+    </div>
+</div>

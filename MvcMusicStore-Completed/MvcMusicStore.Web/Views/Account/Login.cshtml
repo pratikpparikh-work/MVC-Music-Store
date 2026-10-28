@@ -1,0 +1,47 @@
+@model MvcMusicStore.Web.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Log On";
+}
+
+<h2>Log On</h2>
+<p>
+    Please enter your user name and password.
+    <a asp-controller="Account" asp-action="Register">Register</a> if you don't have an account.
+</p>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-controller="Account" asp-action="Login" method="post">
+    @Html.AntiForgeryToken()
+    <div>
+        <fieldset>
+            <legend>Account Information</legend>
+
+            <div class="editor-label">
+                <label asp-for="UserName"></label>
+            </div>
+            <div class="editor-field">
+                <input asp-for="UserName" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="editor-label">
+                <label asp-for="Password"></label>
+            </div>
+            <div class="editor-field">
+                <input asp-for="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="editor-label">
+                <input asp-for="RememberMe" />
+                <label asp-for="RememberMe"></label>
+            </div>
+
+            <p>
+                <input type="submit" value="Log On" />
+            </p>
+        </fieldset>
+    </div>
+</form>

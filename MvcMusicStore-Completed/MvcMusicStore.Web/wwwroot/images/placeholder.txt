@@ -1,0 +1,2 @@
+/* placeholder.gif - This is a placeholder for album art images */
+/* In production, replace with actual album art images */

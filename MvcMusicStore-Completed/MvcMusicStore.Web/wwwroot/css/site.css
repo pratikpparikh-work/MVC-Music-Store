@@ -1,0 +1,176 @@
+/* Site.css - Migrated from legacy /Content/Site.css to /wwwroot/css/site.css */
+
+body {
+    background-color: #fff;
+    border-top: solid 10px #000;
+    color: #333;
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+a:link, a:visited {
+    color: #333;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #000;
+    text-decoration: none;
+}
+
+#header {
+    background-color: #1b1b1b;
+    display: block;
+    height: 60px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+#header h1 {
+    color: #e8e8e8;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 0px;
+    padding: 10px 0px 0px 10px;
+    float: left;
+}
+
+#header h1 a {
+    color: #e8e8e8;
+    text-decoration: none;
+}
+
+#header ul#navlist {
+    font-size: 1.1em;
+    font-weight: bold;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    float: right;
+}
+
+#header ul#navlist li {
+    float: left;
+    padding: 0px;
+}
+
+#header ul#navlist li a {
+    color: #e8e8e8;
+    display: block;
+    line-height: 60px;
+    padding: 0px 20px;
+    text-decoration: none;
+}
+
+#header ul#navlist li a:hover, #header ul#navlist li a#current {
+    background-color: #000;
+    color: #fff;
+}
+
+#categories {
+    background-color: #f2f2f2;
+    border-bottom: solid 1px #ccc;
+    padding: 10px;
+}
+
+#main {
+    padding: 20px;
+}
+
+#footer {
+    background-color: #1b1b1b;
+    color: #e8e8e8;
+    padding: 10px;
+    text-align: center;
+}
+
+#footer a {
+    color: #e8e8e8;
+}
+
+.genre h3 {
+    font-size: 1.2em;
+}
+
+#album-list {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+#album-list li {
+    float: left;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    width: 120px;
+}
+
+#album-list li a {
+    text-decoration: none;
+}
+
+#album-list li a img {
+    border: solid 1px #ccc;
+    height: 100px;
+    width: 100px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table th {
+    background-color: #1b1b1b;
+    color: #e8e8e8;
+    padding: 5px 10px;
+    text-align: left;
+}
+
+table td {
+    border-bottom: solid 1px #ccc;
+    padding: 5px 10px;
+}
+
+.text-danger {
+    color: #a94442;
+}
+
+.editor-label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.editor-field {
+    margin-bottom: 10px;
+}
+
+.editor-field input, .editor-field select {
+    width: 300px;
+}
+
+fieldset {
+    border: solid 1px #ccc;
+    margin: 10px 0px;
+    padding: 10px;
+}
+
+legend {
+    font-weight: bold;
+}
+
+.button a {
+    background-color: #1b1b1b;
+    color: #e8e8e8;
+    display: inline-block;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+.button a:hover {
+    background-color: #000;
+}

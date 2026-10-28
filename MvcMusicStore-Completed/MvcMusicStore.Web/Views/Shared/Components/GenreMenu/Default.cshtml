@@ -1,0 +1,12 @@
+@model IEnumerable<MvcMusicStore.Domain.Entities.Genre>
+@* GenreMenu ViewComponent - replaces [ChildActionOnly] GenreMenu action *@
+<ul id="genre-list">
+    @foreach (var genre in Model)
+    {
+        <li>
+            <a asp-controller="Store" asp-action="Browse" asp-route-genre="@genre.Name">
+                @genre.Name
+            </a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,34 @@
+@model IEnumerable<MvcMusicStore.Domain.Entities.Album>
+
+@{
+    ViewBag.Title = "Store Manager";
+}
+
+<h2>Store Manager</h2>
+
+<p>
+    <a asp-controller="StoreManager" asp-action="Create">Create New</a>
+</p>
+<table>
+    <tr>
+        <th>Genre</th>
+        <th>Artist</th>
+        <th>Title</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Genre?.Name</td>
+            <td>@item.Artist?.Name</td>
+            <td>@item.Title</td>
+            <td>@item.Price.ToString("C")</td>
+            <td>
+                <a asp-controller="StoreManager" asp-action="Edit" asp-route-id="@item.AlbumId">Edit</a> |
+                <a asp-controller="StoreManager" asp-action="Details" asp-route-id="@item.AlbumId">Details</a> |
+                <a asp-controller="StoreManager" asp-action="Delete" asp-route-id="@item.AlbumId">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

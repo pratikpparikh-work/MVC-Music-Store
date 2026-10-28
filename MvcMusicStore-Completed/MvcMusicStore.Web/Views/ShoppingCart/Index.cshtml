@@ -1,0 +1,72 @@
+@model MvcMusicStore.Web.ViewModels.ShoppingCartViewModel
+
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+
+<h3>
+    <em>Review</em> your cart:
+</h3>
+<p class="button">
+    <a asp-controller="Checkout" asp-action="AddressAndPayment">Checkout &gt;&gt;</a>
+</p>
+<div id="update-message">
+</div>
+<table>
+    <tr>
+        <th>Album Name</th>
+        <th>Price (each)</th>
+        <th>Quantity</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.CartItems)
+    {
+        <tr id="row-@item.RecordId">
+            <td>
+                <a asp-controller="Store" asp-action="Details" asp-route-id="@item.AlbumId">
+                    @item.Album?.Title
+                </a>
+            </td>
+            <td>
+                @item.Album?.Price.ToString("C")
+            </td>
+            <td id="item-count-@item.RecordId">
+                @item.Count
+            </td>
+            <td>
+                <a href="#" class="RemoveLink" data-id="@item.RecordId">Remove from cart</a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>Total</td>
+        <td></td>
+        <td></td>
+        <td id="cart-total">
+            @Model.CartTotal.ToString("C")
+        </td>
+    </tr>
+</table>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $(".RemoveLink").click(function () {
+                var recordToDelete = $(this).attr("data-id");
+                if (recordToDelete != '') {
+                    $.post("/ShoppingCart/RemoveFromCart", { "id": recordToDelete },
+                        function (data) {
+                            if (data.itemCount == 0) {
+                                $('#row-' + data.deleteId).fadeOut('slow');
+                            } else {
+                                $('#item-count-' + data.deleteId).text(data.itemCount);
+                            }
+                            $('#cart-total').text(data.cartTotal);
+                            $('#update-message').text(data.message);
+                            $('#cart-status').text('Cart (' + data.cartCount + ')');
+                        });
+                }
+            });
+        });
+    </script>
+}

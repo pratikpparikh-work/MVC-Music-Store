@@ -1,0 +1,31 @@
+@model MvcMusicStore.Domain.Entities.Album
+
+@{
+    ViewBag.Title = "Delete Album";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+
+<fieldset>
+    <legend>Album</legend>
+
+    <div class="display-label">Genre</div>
+    <div class="display-field">@Model.Genre?.Name</div>
+
+    <div class="display-label">Artist</div>
+    <div class="display-field">@Model.Artist?.Name</div>
+
+    <div class="display-label">Title</div>
+    <div class="display-field">@Model.Title</div>
+
+    <div class="display-label">Price</div>
+    <div class="display-field">@Model.Price.ToString("C")</div>
+</fieldset>
+
+<form asp-controller="StoreManager" asp-action="Delete" asp-route-id="@Model.AlbumId" method="post">
+    @Html.AntiForgeryToken()
+    <input type="submit" value="Delete" /> |
+    <a asp-controller="StoreManager" asp-action="Index">Back to List</a>
+</form>
