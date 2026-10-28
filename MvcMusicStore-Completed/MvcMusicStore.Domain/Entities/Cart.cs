@@ -5,6 +5,7 @@ namespace MvcMusicStore.Domain.Entities
 {
     /// <summary>
     /// Represents a shopping cart item.
+    /// DateCreated uses DateTimeOffset for PostgreSQL timestamptz compatibility.
     /// </summary>
     public class Cart
     {
@@ -13,7 +14,7 @@ namespace MvcMusicStore.Domain.Entities
         public string CartId { get; set; } = string.Empty;
         public int AlbumId { get; set; }
         public int Count { get; set; }
-        public DateTime DateCreated { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
 
         public virtual Album? Album { get; set; }
     }

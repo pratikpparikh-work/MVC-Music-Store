@@ -8,6 +8,7 @@ namespace MvcMusicStore.Infrastructure.Data
     /// <summary>
     /// Seeds the database with initial sample data.
     /// Replaces the legacy EF6 DropCreateDatabaseIfModelChanges SampleData initializer.
+    /// Updated for PostgreSQL 16 compatibility (DateTimeOffset for timestamptz columns).
     /// </summary>
     public static class SampleDataSeeder
     {

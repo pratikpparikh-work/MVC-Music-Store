@@ -15,25 +15,24 @@ var builder = WebApplication.CreateBuilder(args);
 // Add MVC with views
 builder.Services.AddControllersWithViews();
 
-// Configure EF Core DbContext with SQLite (replaces EF6 MusicStoreEntities + SQL CE)
-// SQL Server Compact Edition (SqlServerCe.4.0) is not supported in .NET 8
-// Replaced with SQLite for development; use SQL Server for production
+// Configure EF Core DbContext with PostgreSQL (replaces SQL Server / SQLite)
+// Npgsql is the recommended provider for PostgreSQL with EF Core 8
 builder.Services.AddDbContext<MusicStoreDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("MusicStoreConnection");
-    if (!string.IsNullOrEmpty(connectionString) && connectionString.Contains("Server="))
+    var connectionString = builder.Configuration.GetConnectionString("MusicStoreConnection")
+        ?? "Host=localhost;Port=5432;Database=MvcMusicStore;Username=postgres;Password=postgres";
+
+    options.UseNpgsql(connectionString, npgsqlOptions =>
     {
-        // SQL Server connection string
-        options.UseSqlServer(connectionString);
-    }
-    else
-    {
-        // SQLite connection string (default for development)
-        var sqliteConn = !string.IsNullOrEmpty(connectionString)
-            ? connectionString
-            : "Data Source=MvcMusicStore.db";
-        options.UseSqlite(sqliteConn);
-    }
+        npgsqlOptions.MigrationsHistoryTable("__ef_migrations_history", "public");
+        npgsqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 3,
+            maxRetryDelay: TimeSpan.FromSeconds(5),
+            errorCodesToAdd: null);
+    });
+
+    // Use snake_case naming convention for PostgreSQL compatibility
+    options.UseSnakeCaseNamingConvention();
 });
 
 // Configure ASP.NET Core Identity (replaces Forms Authentication + Membership provider)

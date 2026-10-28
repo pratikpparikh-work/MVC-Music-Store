@@ -7,12 +7,13 @@ namespace MvcMusicStore.Domain.Entities
 {
     /// <summary>
     /// Represents a customer order.
+    /// OrderDate uses DateTimeOffset for PostgreSQL timestamptz compatibility.
     /// </summary>
     public class Order
     {
         public int OrderId { get; set; }
 
-        public DateTime OrderDate { get; set; }
+        public DateTimeOffset OrderDate { get; set; }
 
         public string Username { get; set; } = string.Empty;
 

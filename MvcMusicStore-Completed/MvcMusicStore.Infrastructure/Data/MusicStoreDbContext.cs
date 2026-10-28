@@ -6,6 +6,7 @@ namespace MvcMusicStore.Infrastructure.Data
 {
     /// <summary>
     /// EF Core DbContext for the MVC Music Store application.
+    /// Configured for PostgreSQL 16 with Npgsql provider and snake_case naming conventions.
     /// Replaces the legacy EF6 MusicStoreEntities DbContext.
     /// </summary>
     public class MusicStoreDbContext : IdentityDbContext
@@ -26,13 +27,20 @@ namespace MvcMusicStore.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Set default schema to "public" for PostgreSQL
+            modelBuilder.HasDefaultSchema("public");
+
+            // Enable PostgreSQL extensions
+            modelBuilder.HasPostgresExtension("uuid-ossp");
+
             // Album configuration
             modelBuilder.Entity<Album>(entity =>
             {
                 entity.HasKey(a => a.AlbumId);
                 entity.Property(a => a.Title).IsRequired().HasMaxLength(160);
                 entity.Property(a => a.AlbumArtUrl).HasMaxLength(1024);
-                entity.Property(a => a.Price).HasColumnType("decimal(18,2)");
+                // Use "numeric" type for PostgreSQL instead of SQL Server "decimal"
+                entity.Property(a => a.Price).HasColumnType("numeric(18,2)");
                 entity.HasOne(a => a.Genre)
                       .WithMany(g => g.Albums)
                       .HasForeignKey(a => a.GenreId);
@@ -61,6 +69,8 @@ namespace MvcMusicStore.Infrastructure.Data
             {
                 entity.HasKey(c => c.RecordId);
                 entity.Property(c => c.CartId).IsRequired().HasMaxLength(50);
+                // PostgreSQL uses timestamptz for timezone-aware DateTime
+                entity.Property(c => c.DateCreated).HasColumnType("timestamptz");
                 entity.HasOne(c => c.Album)
                       .WithMany()
                       .HasForeignKey(c => c.AlbumId);
@@ -70,15 +80,19 @@ namespace MvcMusicStore.Infrastructure.Data
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasKey(o => o.OrderId);
-                entity.Property(o => o.Total).HasColumnType("decimal(18,2)");
+                // Use "numeric" type for PostgreSQL instead of SQL Server "decimal"
+                entity.Property(o => o.Total).HasColumnType("numeric(18,2)");
                 entity.Property(o => o.Username).HasMaxLength(256);
+                // PostgreSQL uses timestamptz for timezone-aware DateTime
+                entity.Property(o => o.OrderDate).HasColumnType("timestamptz");
             });
 
             // OrderDetail configuration
             modelBuilder.Entity<OrderDetail>(entity =>
             {
                 entity.HasKey(od => od.OrderDetailId);
-                entity.Property(od => od.UnitPrice).HasColumnType("decimal(18,2)");
+                // Use "numeric" type for PostgreSQL instead of SQL Server "decimal"
+                entity.Property(od => od.UnitPrice).HasColumnType("numeric(18,2)");
                 entity.HasOne(od => od.Album)
                       .WithMany(a => a.OrderDetails)
                       .HasForeignKey(od => od.AlbumId);

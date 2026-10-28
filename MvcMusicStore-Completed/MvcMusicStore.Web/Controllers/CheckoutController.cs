@@ -53,7 +53,7 @@ namespace MvcMusicStore.Web.Controllers
             try
             {
                 order.Username = User.Identity!.Name!;
-                order.OrderDate = DateTime.UtcNow;
+                order.OrderDate = DateTimeOffset.UtcNow;
 
                 // Save order
                 var savedOrder = await _orderRepository.AddAsync(order);

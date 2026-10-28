@@ -44,7 +44,7 @@ namespace MvcMusicStore.Application.Services
                     AlbumId = albumId,
                     CartId = cartId,
                     Count = 1,
-                    DateCreated = DateTime.UtcNow
+                    DateCreated = DateTimeOffset.UtcNow
                 };
                 await _cartRepository.AddCartItemAsync(cartItem);
             }
