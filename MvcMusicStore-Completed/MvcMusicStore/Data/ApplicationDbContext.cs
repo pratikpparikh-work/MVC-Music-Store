@@ -7,6 +7,7 @@ namespace MvcMusicStore.Data
 {
     /// <summary>
     /// Application database context combining Identity and music store data.
+    /// Configured for PostgreSQL with snake_case naming conventions.
     /// </summary>
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -26,27 +27,40 @@ namespace MvcMusicStore.Data
         {
             base.OnModelCreating(builder);
 
+            // Set default schema to "public" for PostgreSQL
+            builder.HasDefaultSchema("public");
+
+            // Configure PostgreSQL extensions
+            builder.HasPostgresExtension("uuid-ossp");
+
             builder.Entity<Album>(entity =>
             {
                 entity.HasKey(a => a.AlbumId);
-                entity.Property(a => a.Price).HasColumnType("decimal(18,2)");
+                // Use PostgreSQL numeric type for decimal columns
+                entity.Property(a => a.Price).HasColumnType("numeric(18,2)");
             });
 
             builder.Entity<Cart>(entity =>
             {
                 entity.HasKey(c => c.RecordId);
+                // Map DateTime to timestamp without time zone for PostgreSQL
+                entity.Property(c => c.DateCreated).HasColumnType("timestamp without time zone");
             });
 
             builder.Entity<Order>(entity =>
             {
                 entity.HasKey(o => o.OrderId);
-                entity.Property(o => o.Total).HasColumnType("decimal(18,2)");
+                // Use PostgreSQL numeric type for decimal columns
+                entity.Property(o => o.Total).HasColumnType("numeric(18,2)");
+                // Map DateTime to timestamp without time zone for PostgreSQL
+                entity.Property(o => o.OrderDate).HasColumnType("timestamp without time zone");
             });
 
             builder.Entity<OrderDetail>(entity =>
             {
                 entity.HasKey(od => od.OrderDetailId);
-                entity.Property(od => od.UnitPrice).HasColumnType("decimal(18,2)");
+                // Use PostgreSQL numeric type for decimal columns
+                entity.Property(od => od.UnitPrice).HasColumnType("numeric(18,2)");
             });
         }
     }

@@ -3,14 +3,27 @@ using MvcMusicStore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+// Enable legacy timestamp behavior for Npgsql to handle DateTime without UTC enforcement
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure Entity Framework Core with SQL Server
+// Configure Entity Framework Core with PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MusicStoreEntities")));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("MusicStoreEntities"),
+        npgsqlOptions =>
+        {
+            npgsqlOptions.MigrationsHistoryTable("__ef_migrations_history", "public");
+            npgsqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 3,
+                maxRetryDelay: TimeSpan.FromSeconds(5),
+                errorCodesToAdd: null);
+        })
+    .UseSnakeCaseNamingConvention());
 
 // Configure ASP.NET Core Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
