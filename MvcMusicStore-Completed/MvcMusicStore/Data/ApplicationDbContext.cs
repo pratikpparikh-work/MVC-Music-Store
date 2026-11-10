@@ -27,40 +27,58 @@ namespace MvcMusicStore.Data
         {
             base.OnModelCreating(builder);
 
-            // Set default schema to "public" for PostgreSQL
-            builder.HasDefaultSchema("public");
+            // Only apply PostgreSQL-specific configuration when using Npgsql provider
+            var isPostgres = Database.ProviderName?.Contains("Npgsql") == true ||
+                             Database.ProviderName?.Contains("PostgreSQL") == true;
 
-            // Configure PostgreSQL extensions
-            builder.HasPostgresExtension("uuid-ossp");
+            if (isPostgres)
+            {
+                // Set default schema to "public" for PostgreSQL
+                builder.HasDefaultSchema("public");
+                // Configure PostgreSQL extensions
+                builder.HasPostgresExtension("uuid-ossp");
+            }
 
             builder.Entity<Album>(entity =>
             {
                 entity.HasKey(a => a.AlbumId);
-                // Use PostgreSQL numeric type for decimal columns
-                entity.Property(a => a.Price).HasColumnType("numeric(18,2)");
+                if (isPostgres)
+                {
+                    // Use PostgreSQL numeric type for decimal columns
+                    entity.Property(a => a.Price).HasColumnType("numeric(18,2)");
+                }
             });
 
             builder.Entity<Cart>(entity =>
             {
                 entity.HasKey(c => c.RecordId);
-                // Map DateTime to timestamp without time zone for PostgreSQL
-                entity.Property(c => c.DateCreated).HasColumnType("timestamp without time zone");
+                if (isPostgres)
+                {
+                    // Map DateTime to timestamp without time zone for PostgreSQL
+                    entity.Property(c => c.DateCreated).HasColumnType("timestamp without time zone");
+                }
             });
 
             builder.Entity<Order>(entity =>
             {
                 entity.HasKey(o => o.OrderId);
-                // Use PostgreSQL numeric type for decimal columns
-                entity.Property(o => o.Total).HasColumnType("numeric(18,2)");
-                // Map DateTime to timestamp without time zone for PostgreSQL
-                entity.Property(o => o.OrderDate).HasColumnType("timestamp without time zone");
+                if (isPostgres)
+                {
+                    // Use PostgreSQL numeric type for decimal columns
+                    entity.Property(o => o.Total).HasColumnType("numeric(18,2)");
+                    // Map DateTime to timestamp without time zone for PostgreSQL
+                    entity.Property(o => o.OrderDate).HasColumnType("timestamp without time zone");
+                }
             });
 
             builder.Entity<OrderDetail>(entity =>
             {
                 entity.HasKey(od => od.OrderDetailId);
-                // Use PostgreSQL numeric type for decimal columns
-                entity.Property(od => od.UnitPrice).HasColumnType("numeric(18,2)");
+                if (isPostgres)
+                {
+                    // Use PostgreSQL numeric type for decimal columns
+                    entity.Property(od => od.UnitPrice).HasColumnType("numeric(18,2)");
+                }
             });
         }
     }
