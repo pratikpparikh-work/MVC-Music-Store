@@ -1,11 +1,11 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MvcMusicStore.Models
 {
-    [Bind(Exclude = "AlbumId")]
+    [Bind("GenreId,ArtistId,Title,Price,AlbumArtUrl")]
     public class Album
     {
         [ScaffoldColumn(false)]
@@ -19,7 +19,7 @@ namespace MvcMusicStore.Models
 
         [Required(ErrorMessage = "An Album Title is required")]
         [StringLength(160)]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Price is required")]
         [Range(0.01, 100.00,
@@ -28,10 +28,10 @@ namespace MvcMusicStore.Models
 
         [DisplayName("Album Art URL")]
         [StringLength(1024)]
-        public string AlbumArtUrl { get; set; }
+        public string? AlbumArtUrl { get; set; }
 
-        public virtual Genre Genre { get; set; }
-        public virtual Artist Artist { get; set; }
-        public virtual List<OrderDetail> OrderDetails { get; set; }
+        public virtual Genre? Genre { get; set; }
+        public virtual Artist? Artist { get; set; }
+        public virtual List<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

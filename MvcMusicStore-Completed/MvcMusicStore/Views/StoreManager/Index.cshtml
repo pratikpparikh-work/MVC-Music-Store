@@ -1,16 +1,16 @@
-﻿@model IEnumerable<MvcMusicStore.Models.Album>
-
-@helper Truncate(string input, int length)
-{
-    if (input.Length <= length) {
-        @input
-    } else {
-        @input.Substring(0, length)<text>...</text>
-    }
-}
+@model IEnumerable<MvcMusicStore.Models.Album>
 
 @{
     ViewBag.Title = "Index";
+}
+
+@functions {
+    string Truncate(string input, int length)
+    {
+        if (input == null) return string.Empty;
+        if (input.Length <= length) return input;
+        return input.Substring(0, length) + "...";
+    }
 }
 
 <h2>Index</h2>
@@ -38,10 +38,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Genre.Name)
+            @Html.DisplayFor(modelItem => item.Genre!.Name)
         </td>
         <td>
-            @Truncate(item.Artist.Name, 25)
+            @Truncate(item.Artist?.Name ?? string.Empty, 25)
         </td>
         <td>
             @Truncate(item.Title, 25)

@@ -1,58 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MvcMusicStore.Data;
 using MvcMusicStore.Models;
 
 namespace MvcMusicStore.Controllers
 {
     public class StoreController : Controller
     {
-        MusicStoreEntities storeDB = new MusicStoreEntities();
+        private readonly ApplicationDbContext _storeDB;
 
-        //
-        // GET: /Store/
-
-        public ActionResult Index()
+        public StoreController(ApplicationDbContext storeDB)
         {
-            var genres = storeDB.Genres.ToList();
+            _storeDB = storeDB;
+        }
 
+        // GET: /Store/
+        public async Task<IActionResult> Index()
+        {
+            var genres = await _storeDB.Genres.ToListAsync();
             return View(genres);
         }
 
-        //
         // GET: /Store/Browse?genre=Disco
-
-        public ActionResult Browse(string genre)
+        public async Task<IActionResult> Browse(string genre)
         {
-            // Retrieve Genre and its Associated Albums from database
-            var genreModel = storeDB.Genres.Include("Albums")
-                .Single(g => g.Name == genre);
+            var genreModel = await _storeDB.Genres
+                .Include(g => g.Albums)
+                .SingleOrDefaultAsync(g => g.Name == genre);
+
+            if (genreModel == null)
+            {
+                return NotFound();
+            }
 
             return View(genreModel);
         }
 
-        //
         // GET: /Store/Details/5
-
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var album = storeDB.Albums.Find(id);
+            var album = await _storeDB.Albums.FindAsync(id);
+
+            if (album == null)
+            {
+                return NotFound();
+            }
 
             return View(album);
         }
-
-        //
-        // GET: /Store/GenreMenu
-
-        [ChildActionOnly]
-        public ActionResult GenreMenu()
-        {
-            var genres = storeDB.Genres.ToList();
-
-            return PartialView(genres);
-        }
-
     }
 }

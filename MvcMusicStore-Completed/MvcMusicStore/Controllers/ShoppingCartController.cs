@@ -1,92 +1,78 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MvcMusicStore.Data;
 using MvcMusicStore.Models;
 using MvcMusicStore.ViewModels;
+using System.Net;
 
 namespace MvcMusicStore.Controllers
 {
     public class ShoppingCartController : Controller
     {
-        MusicStoreEntities storeDB = new MusicStoreEntities();
+        private readonly ApplicationDbContext _storeDB;
+        private readonly ShoppingCart _cart;
 
-        //
-        // GET: /ShoppingCart/
-
-        public ActionResult Index()
+        public ShoppingCartController(ApplicationDbContext storeDB, ShoppingCart cart)
         {
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+            _storeDB = storeDB;
+            _cart = cart;
+        }
 
-            // Set up our ViewModel
+        // GET: /ShoppingCart/
+        public IActionResult Index()
+        {
             var viewModel = new ShoppingCartViewModel
             {
-                CartItems = cart.GetCartItems(),
-                CartTotal = cart.GetTotal()
+                CartItems = _cart.GetCartItems(),
+                CartTotal = _cart.GetTotal()
             };
 
-            // Return the view
             return View(viewModel);
         }
 
-        //
         // GET: /Store/AddToCart/5
-
-        public ActionResult AddToCart(int id)
+        public async Task<IActionResult> AddToCart(int id)
         {
+            var addedAlbum = await _storeDB.Albums
+                .SingleOrDefaultAsync(album => album.AlbumId == id);
 
-            // Retrieve the album from the database
-            var addedAlbum = storeDB.Albums
-                .Single(album => album.AlbumId == id);
+            if (addedAlbum == null)
+            {
+                return NotFound();
+            }
 
-            // Add it to the shopping cart
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+            _cart.AddToCart(addedAlbum);
 
-            cart.AddToCart(addedAlbum);
-
-            // Go back to the main store page for more shopping
             return RedirectToAction("Index");
         }
 
-        //
         // AJAX: /ShoppingCart/RemoveFromCart/5
-
         [HttpPost]
-        public ActionResult RemoveFromCart(int id)
+        public async Task<IActionResult> RemoveFromCart(int id)
         {
-            // Remove the item from the cart
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+            var cartItem = await _storeDB.Carts
+                .Include(c => c.Album)
+                .SingleOrDefaultAsync(item => item.RecordId == id);
 
-            // Get the name of the album to display confirmation
-            string albumName = storeDB.Carts
-                .Single(item => item.RecordId == id).Album.Title;
+            if (cartItem == null)
+            {
+                return NotFound();
+            }
 
-            // Remove from cart
-            int itemCount = cart.RemoveFromCart(id);
+            string albumName = cartItem.Album?.Title ?? string.Empty;
 
-            // Display the confirmation message
+            int itemCount = _cart.RemoveFromCart(id);
+
             var results = new ShoppingCartRemoveViewModel
             {
-                Message = Server.HtmlEncode(albumName) +
-                    " has been removed from your shopping cart.",
-                CartTotal = cart.GetTotal(),
-                CartCount = cart.GetCount(),
+                Message = WebUtility.HtmlEncode(albumName) + " has been removed from your shopping cart.",
+                CartTotal = _cart.GetTotal(),
+                CartCount = _cart.GetCount(),
                 ItemCount = itemCount,
                 DeleteId = id
             };
 
             return Json(results);
-        }
-
-        //
-        // GET: /ShoppingCart/CartSummary
-
-        [ChildActionOnly]
-        public ActionResult CartSummary()
-        {
-            var cart = ShoppingCart.GetCart(this.HttpContext);
-
-            ViewData["CartCount"] = cart.GetCount();
-
-            return PartialView("CartSummary");
         }
     }
 }
