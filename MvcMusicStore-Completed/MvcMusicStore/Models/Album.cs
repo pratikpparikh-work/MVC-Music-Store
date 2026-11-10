@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -24,6 +25,8 @@ namespace MvcMusicStore.Models
         [Required(ErrorMessage = "Price is required")]
         [Range(0.01, 100.00,
             ErrorMessage = "Price must be between 0.01 and 100.00")]
+        // Use PostgreSQL numeric type for decimal columns
+        [Column(TypeName = "numeric(18,2)")]
         public decimal Price { get; set; }
 
         [DisplayName("Album Art URL")]

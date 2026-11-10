@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MvcMusicStore.Models
@@ -12,6 +13,8 @@ namespace MvcMusicStore.Models
         public int OrderId { get; set; }
 
         [ScaffoldColumn(false)]
+        // Map DateTime to timestamp without time zone for PostgreSQL
+        [Column(TypeName = "timestamp without time zone")]
         public System.DateTime OrderDate { get; set; }
 
         [ScaffoldColumn(false)]
@@ -60,6 +63,8 @@ namespace MvcMusicStore.Models
         public string Email { get; set; } = string.Empty;
 
         [ScaffoldColumn(false)]
+        // Use PostgreSQL numeric type for decimal columns
+        [Column(TypeName = "numeric(18,2)")]
         public decimal Total { get; set; }
 
         public List<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
